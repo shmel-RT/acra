@@ -90,6 +90,10 @@ func (b *ConnectorFileSystemKeyStoreBuilder) Build() (*ConnectorFileSystemKeySto
 	if b.directory == "" {
 		return nil, errNoPrivateKeyDir
 	}
+	keyDir, err := filepath.Abs(b.directory)
+	if err != nil {
+		return nil, err
+	}
 	if b.clientID == nil {
 		return nil, errNoClientID
 	}
@@ -100,7 +104,7 @@ func (b *ConnectorFileSystemKeyStoreBuilder) Build() (*ConnectorFileSystemKeySto
 		return nil, errNoConnectorMode
 	}
 	return &ConnectorFileSystemKeyStore{
-		directory:     b.directory,
+		directory:     keyDir,
 		clientID:      b.clientID,
 		storage:       b.storage,
 		encryptor:     b.encryptor,

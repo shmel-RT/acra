@@ -138,10 +138,21 @@ func (b *KeyStoreBuilder) Build() (*KeyStore, error) {
 	if b.publicKeyDir == "" {
 		return nil, errNoPublicKeyDir
 	}
+	privateKeyDir, err := filepath.Abs(b.privateKeyDir)
+	if err != nil {
+		return nil, err
+	}
+	if b.publicKeyDir == "" {
+		b.publicKeyDir = b.privateKeyDir
+	}
+	publicKeyDir, err := filepath.Abs(b.publicKeyDir)
+	if err != nil {
+		return nil, err
+	}
 	if b.encryptor == nil {
 		return nil, errNoEncryptor
 	}
-	return newFilesystemKeyStore(b.privateKeyDir, b.publicKeyDir, b.storage, b.encryptor, b.cacheSize)
+	return newFilesystemKeyStore(privateKeyDir, publicKeyDir, b.storage, b.encryptor, b.cacheSize)
 }
 
 func newFilesystemKeyStore(privateKeyFolder, publicKeyFolder string, storage Storage, encryptor keystore.KeyEncryptor, cacheSize int) (*KeyStore, error) {
