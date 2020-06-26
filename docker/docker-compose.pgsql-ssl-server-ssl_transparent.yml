@@ -81,7 +81,7 @@ services:
             --tls_db_sni=postgresql
             --acraconnector_transport_encryption_disable
             --encryptor_config_file=/acra-encryptor.yaml
-            --tls_auth=1
+            --tls_auth=4
             -v
 
 networks:
